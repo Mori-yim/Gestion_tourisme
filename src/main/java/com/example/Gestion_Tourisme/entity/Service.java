@@ -21,11 +21,22 @@ public class  Service {
 
     private String nom;
     private String description;
-    private float prix;
-    private String emplacement;
+    private double prix;
+    //private String emplacement;
     private String type_service;
 
-    @ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
-    private List<User> users= new ArrayList<>();
+    //@ManyToMany(mappedBy = "services", fetch = FetchType.LAZY)
+    //private List<User> users= new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    private Agent agent;
+
+    @ManyToOne
+    @JoinColumn(name = "site_id")
+    private SiteTouristique site;
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations = new ArrayList<>();
 
 }

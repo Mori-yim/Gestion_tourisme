@@ -1,7 +1,5 @@
 package com.example.Gestion_Tourisme.controller;
 
-import com.example.Gestion_Tourisme.dto.adminDto.AdminRequestDTO;
-import com.example.Gestion_Tourisme.dto.adminDto.AdminResponseDTO;
 import com.example.Gestion_Tourisme.dto.paiementDto.PaiementRequestDTO;
 import com.example.Gestion_Tourisme.dto.paiementDto.PaiementResponseDTO;
 import com.example.Gestion_Tourisme.service.PaiementService;
@@ -10,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -18,10 +17,10 @@ public class PaiementController {
     @Autowired
     private PaiementService paiementService;
 
-    @PostMapping("/create")
-    public ResponseEntity<PaiementResponseDTO> create(@RequestBody PaiementRequestDTO paiementRequestDTO){
-        return new ResponseEntity<>(paiementService.create(paiementRequestDTO), HttpStatus.CREATED);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<PaiementResponseDTO> create(@RequestBody PaiementRequestDTO paiementRequestDTO){
+//        return new ResponseEntity<>(paiementService.create(paiementRequestDTO), HttpStatus.CREATED);
+//    }
     @GetMapping("/")
     public List<PaiementResponseDTO> getAll(){
         return paiementService.getAll();
@@ -39,4 +38,16 @@ public class PaiementController {
         paiementService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    // Payer une réservation (génère automatiquement la facture PDF)
+    @PostMapping("/{clientId}/paiement/{reservationId}")
+    public InputStream payerReservation(/*@PathVariable Long clientId,
+                                        @PathVariable Long reservationId*/ @RequestBody PaiementRequestDTO paiement) {
+        return paiementService.effectuerPaiement(/*clientId, reservationId*/paiement);
+    }
+
+     //Paiements reçus
+    /*@GetMapping("/{agentId}/paiements")
+    public List<PaiementDTO> getPaiementsByAgent(@PathVariable Long agentId) {
+        return paiementService.getPaiementsForAgent(agentId);
+    }*/
 }

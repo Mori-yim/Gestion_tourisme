@@ -4,6 +4,7 @@ import com.example.Gestion_Tourisme.dto.adminDto.AdminRequestDTO;
 import com.example.Gestion_Tourisme.dto.adminDto.AdminResponseDTO;
 import com.example.Gestion_Tourisme.dto.siteTouristiqueDto.SiteTouristiqueRequestDTO;
 import com.example.Gestion_Tourisme.dto.siteTouristiqueDto.SiteTouristiqueResponseDTO;
+import com.example.Gestion_Tourisme.entity.SiteTouristique;
 import com.example.Gestion_Tourisme.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,15 @@ public class SiteController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
         siteService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    // 🔹 Recherche site par nom
+    @GetMapping("/sites/nom/{nom}")
+    public /*List<SiteTouristiqueResponseDTO>*/ResponseEntity<SiteTouristiqueResponseDTO> searchSitesByNom(@PathVariable String nom) {
+        return new ResponseEntity<>(siteService.chearchByNom(nom),HttpStatus.OK);
+    }
+    // 🔹 Recherche site par localisation
+    @GetMapping("/sites/localisation/{localisation}")
+    public List<SiteTouristique> searchSitesByLocalisation(@PathVariable String localisation) {
+        return siteService.chearchByLocalisation(localisation);
     }
 }

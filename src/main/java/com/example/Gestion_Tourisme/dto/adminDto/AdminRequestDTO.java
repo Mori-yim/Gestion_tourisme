@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminRequestDTO extends UserRequestDTO {
     private String code;
-    private String role;
+
 }

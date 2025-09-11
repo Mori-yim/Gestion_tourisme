@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 //@NoArgsConstructor
 public class AgentResponseDTO extends UserResponseDTO {
     private String role;
+    private String agence;
 }

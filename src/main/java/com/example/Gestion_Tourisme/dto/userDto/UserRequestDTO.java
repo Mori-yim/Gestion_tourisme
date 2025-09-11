@@ -1,5 +1,6 @@
 package com.example.Gestion_Tourisme.dto.userDto;
 
+import com.example.Gestion_Tourisme.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +22,11 @@ public class UserRequestDTO {
     //@Size(min = 3, max = 50, message = "Le nom d'utilisateur doit avoir entre 3 et 50 caractères")
     private String name;
     private String username;
-   // @NotBlank(message = "L'email est obligatoire")
-    //@Email(message = "Email invalide")
     private String email;
-    //@NotBlank(message = "Le mot de passe est obligatoire")
-    //@Size(min = 6, max = 120, message = "Le mot de passe doit contenir entre 6 et 120 caractères")
     private String password;
     private String telephone;
-    private Date dateInscription;
+    private LocalDateTime dateInscription = LocalDateTime.now();
+    private Role role;
 
 
 }

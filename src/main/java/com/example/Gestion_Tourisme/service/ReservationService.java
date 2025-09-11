@@ -13,4 +13,7 @@ public interface ReservationService {
     public ReservationResponseDTO updateById(Long id, ReservationRequestDTO reservationRequestDTO);
     public void delete(Long id);
     public void assignerPaiementService(Long id_reservation,Long id_paiement);
+    public List<ReservationResponseDTO> getReservationsByClient(Long clientId);
+    public List<ReservationResponseDTO> getHistoriqueReservations(Long clientId);
+    public List<ReservationResponseDTO> getReservationsForAgent(Long agentId);
 }

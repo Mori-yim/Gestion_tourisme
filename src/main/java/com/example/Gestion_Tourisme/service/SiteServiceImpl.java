@@ -1,18 +1,13 @@
 package com.example.Gestion_Tourisme.service;
 
-import com.example.Gestion_Tourisme.dto.adminDto.AdminRequestDTO;
-import com.example.Gestion_Tourisme.dto.adminDto.AdminResponseDTO;
 import com.example.Gestion_Tourisme.dto.siteTouristiqueDto.SiteTouristiqueRequestDTO;
 import com.example.Gestion_Tourisme.dto.siteTouristiqueDto.SiteTouristiqueResponseDTO;
-import com.example.Gestion_Tourisme.entity.Admin;
 import com.example.Gestion_Tourisme.entity.SiteTouristique;
-import com.example.Gestion_Tourisme.repository.AdminRepository;
 import com.example.Gestion_Tourisme.repository.SiteTouristiqueRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,5 +55,33 @@ public class SiteServiceImpl implements SiteService{
     @Override
     public void delete(Long id) {
         siteTouristiqueRepository.deleteById(id);
+    }
+
+    // 3️ Recherche de sites ------------------------
+
+    public List<SiteTouristiqueResponseDTO> searchSites(SiteTouristiqueRequestDTO siteRequest) {
+        List<SiteTouristique> sites;
+
+        if (siteRequest.getNom() != null && !siteRequest.getNom().isEmpty()) {
+            sites = siteTouristiqueRepository.findByNomContainingIgnoreCase(siteRequest.getNom());
+        } else if (siteRequest.getLocalisation() != null && !siteRequest.getLocalisation().isEmpty()) {
+            sites = siteTouristiqueRepository.findByLocalisationContainingIgnoreCase(siteRequest.getLocalisation());
+        } else {
+            sites = siteTouristiqueRepository.findAll();
+        }
+
+        return sites.stream()
+                .map(site -> modelMapper.map(site, SiteTouristiqueResponseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public SiteTouristiqueResponseDTO chearchByNom(String nom) {
+        return (SiteTouristiqueResponseDTO) siteTouristiqueRepository.findByNomContainingIgnoreCase(nom);
+    }
+
+    @Override
+    public List<SiteTouristique> chearchByLocalisation(String localisation) {
+        return siteTouristiqueRepository.findByLocalisationContainingIgnoreCase(localisation);
     }
 }

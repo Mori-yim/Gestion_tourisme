@@ -20,7 +20,7 @@ public class ServiceController {
 
     @PostMapping("/create")
     public ResponseEntity<ServiceResponseDTO> create(@RequestBody ServiceRequestDTO serviceRequestDTO){
-        return new ResponseEntity<>(service.create(serviceRequestDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.createService(serviceRequestDTO), HttpStatus.CREATED);
     }
     @GetMapping("/")
     public List<ServiceResponseDTO> getAll(){

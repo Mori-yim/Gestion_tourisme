@@ -17,12 +17,15 @@ public class SiteTouristique {
     private String nom;
     private String description;
     private String localisation;
-    private String image;
+    private String image;   // chemin fichier uploadé
     private String climat;
 
 
-    @ManyToMany(mappedBy = "siteTouristiques", fetch = FetchType.EAGER)
-    private List<User> users = new ArrayList<>();
+    //@ManyToMany(mappedBy = "siteTouristiques", fetch = FetchType.EAGER)
+    //private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Service> services = new ArrayList<>();
 
 
 }

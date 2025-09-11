@@ -13,9 +13,10 @@ public interface UserService {
     public UserResponseDTO updateById(Long id, UserRequestDTO user);
     public void delete(Long id);
     public UserResponseDTO getUserByusername(String name);
-    public void assignerServiceUser(Long user_id, Long service_id);
-    public void assignerReservationUser(Long user_id, Long reservation_id);
-    public void assignerSiteUser(Long user_id, Long site_id);
+    //public void assignerServiceUser(Long user_id, Long service_id);
+   // public void assignerReservationUser(Long user_id, Long reservation_id);
+    //public void assignerSiteUser(Long user_id, Long site_id);
     public List<User> getUserService();
     public List<User> getUserNotService();
+    public UserResponseDTO registerUser(UserRequestDTO dto) throws Exception;
 }

@@ -4,13 +4,15 @@ import com.example.Gestion_Tourisme.dto.reservationDto.ReservationRequestDTO;
 import com.example.Gestion_Tourisme.dto.reservationDto.ReservationResponseDTO;
 import com.example.Gestion_Tourisme.dto.serviceDto.ServiceRequestDTO;
 import com.example.Gestion_Tourisme.dto.serviceDto.ServiceResponseDTO;
+import com.example.Gestion_Tourisme.entity.Agent;
+import com.example.Gestion_Tourisme.entity.Client;
 import com.example.Gestion_Tourisme.entity.Paiement;
 import com.example.Gestion_Tourisme.entity.Reservation;
-import com.example.Gestion_Tourisme.repository.PaiementRepository;
-import com.example.Gestion_Tourisme.repository.ReservationRepository;
+import com.example.Gestion_Tourisme.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,20 +25,60 @@ public class ReservationServiceImpl implements ReservationService{
     @Autowired
     private PaiementRepository paiementRepository;
     @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
+    private ServiceRepository serviceRepository;
+    @Autowired
+    private AgentRepository agentRepository;
+    @Autowired
     private ModelMapper modelMapper;
     @Override
     public ReservationResponseDTO create(ReservationRequestDTO reservation) {
-        Reservation reservation1 = modelMapper.map(reservation, Reservation.class);
-        Reservation saveReservation = reservationRepository.save(reservation1);
-        return modelMapper.map(saveReservation,ReservationResponseDTO.class);
+//        Reservation reservation1 = modelMapper.map(reservation, Reservation.class);
+//        Reservation saveReservation = reservationRepository.save(reservation1);
+//        return modelMapper.map(saveReservation,ReservationResponseDTO.class);
+        Client client = clientRepository.findById(reservation.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+        com.example.Gestion_Tourisme.entity.Service service = serviceRepository.findById(reservation.getServiceId())
+                .orElseThrow(() -> new RuntimeException("Service introuvable"));
+
+        Reservation reservation1 = modelMapper.map(reservation,Reservation.class);
+        reservation1.setClient(client);
+        reservation1.setService(service);
+        reservation1.setStatut("EN_ATTENTE");
+
+        Reservation saved = reservationRepository.save(reservation1);
+        return modelMapper.map(saved, ReservationResponseDTO.class);
     }
 
+    // Lire toutes les réservations d’un client
+    public List<ReservationResponseDTO> getReservationsByClient(Long clientId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+
+        return reservationRepository.findByClient(client)
+                .stream()
+                .map(r -> modelMapper.map(r, ReservationResponseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    // Modifier le statut d’une réservation
+    @Transactional
+    public ReservationResponseDTO updateReservation(Long reservationId, String statut) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+        reservation.setStatut(statut);
+        Reservation updated = reservationRepository.save(reservation);
+        return modelMapper.map(updated, ReservationResponseDTO.class);
+    }
+    //Obtenir une reservation par son id
     @Override
     public ReservationResponseDTO getById(Long id) {
         Reservation reservation= reservationRepository.findById(id).get();
         return modelMapper.map(reservation,ReservationResponseDTO.class);
     }
 
+    //lister toutes les reservations
     @Override
     public List<ReservationResponseDTO> getAll() {
         //List<Reservation> reservations= reservationRepository.findAll();
@@ -75,4 +117,21 @@ public class ReservationServiceImpl implements ReservationService{
         paiement.setReservation(reservation);
         reservationRepository.save(reservation);
     }
+    //Lites des reservations d'un client
+    public List<ReservationResponseDTO> getHistoriqueReservations(Long clientId) {
+        return getReservationsByClient(clientId);
+    }
+
+    // 2️⃣ Réservations liées aux services ------------------------
+
+    public List<ReservationResponseDTO> getReservationsForAgent(Long agentId) {
+        Agent agent = agentRepository.findById(agentId)
+                .orElseThrow(() -> new RuntimeException("Agent introuvable"));
+
+        return serviceRepository.findByAgent(agent).stream()
+                .flatMap(service -> reservationRepository.findByService(service).stream())
+                .map(r -> modelMapper.map(r, ReservationResponseDTO.class))
+                .collect(Collectors.toList());
+    }
+
 }

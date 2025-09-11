@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AgentRequestDTO extends UserRequestDTO {
-    private String code;
-    private String role;
+    private String agence;
+
 }

@@ -5,6 +5,7 @@ import com.example.Gestion_Tourisme.dto.adminDto.AdminResponseDTO;
 import com.example.Gestion_Tourisme.entity.Admin;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
     public AdminResponseDTO create(AdminRequestDTO admin);
@@ -12,4 +13,5 @@ public interface AdminService {
     public List<AdminResponseDTO> getAll();
     public AdminResponseDTO UpdateById(Long id, AdminRequestDTO admin);
     public void delete(Long id);
+    public Map<String, Object> getDashboardStats();
 }

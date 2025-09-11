@@ -18,12 +18,24 @@ public class Reservation {
     private String nom;
     private Date dateDebut;
     private Date dateFin;
+    private String statut; // EN_ATTENTE, CONFIRMEE, ANNULEE
 
-    @ManyToMany(mappedBy = "reservations", fetch = FetchType.EAGER)
-    private List<User> users = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
 
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private Service service;
 
-   @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paiement> paiements = new ArrayList<>();
+
+   // @ManyToMany(mappedBy = "reservations", fetch = FetchType.EAGER)
+    //private List<User> users = new ArrayList<>();
+
+
+   //@OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    //private List<Paiement> paiements = new ArrayList<>();
 
 }

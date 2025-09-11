@@ -14,7 +14,7 @@ public class SiteTouristiqueRequestDTO {
     private String nom;
     private String description;
     private String localisation;
-    private String image;
+    private String image;        // chemin vers le fichier uploadé
     private String climat;
 
 }

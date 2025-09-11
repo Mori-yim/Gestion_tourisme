@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @Entity
 public class Admin extends User{
-    private String code;
+    private String code; // exemple : code interne pour l’admin
+
 }

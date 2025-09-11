@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -38,4 +39,10 @@ public class AdminController {
         adminService.delete(id);
         return ResponseEntity.noContent().build();
     }
+     // 🔹 Dashboard / Statistiques
+    @GetMapping("/dashboard")
+    public Map<String, Object> getDashboardStats() {
+        return adminService.getDashboardStats();
+    }
+
 }

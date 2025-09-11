@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -14,8 +15,9 @@ import java.util.List;
 public class PaiementRequestDTO {
     //private Long id;
     @Positive(message = "Le montant doit etre positif b")
-    private float montant;
-    private Date datePaiement;
+    private double montant;
     private String methodePaiement;
     private String statut;
+    private LocalDateTime datePaiement=LocalDateTime.now();
+    private Long reservationId;
 }

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class PaiementController {
     @Autowired
     private PaiementService paiementService;
@@ -29,17 +29,17 @@ public class PaiementController {
     public ResponseEntity<PaiementResponseDTO> getById(@PathVariable Long id){
         return new ResponseEntity<>(paiementService.getById(id),HttpStatus.OK);
     }
-    @PutMapping("/update/{id}")
+    /*@PutMapping("/update/{id}")
     public ResponseEntity<PaiementResponseDTO> update(@PathVariable Long id, @RequestBody PaiementRequestDTO paiementRequestDTO){
         return new ResponseEntity<>(paiementService.updateById(id,paiementRequestDTO),HttpStatus.OK);
-    }
+    }*/
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         paiementService.delete(id);
         return ResponseEntity.noContent().build();
     }
     // Payer une réservation (génère automatiquement la facture PDF)
-    @PostMapping("/{clientId}/paiement/{reservationId}")
+    @PostMapping("/client/{clientId}/paiement/{reservationId}")
     public InputStream payerReservation(/*@PathVariable Long clientId,
                                         @PathVariable Long reservationId*/ @RequestBody PaiementRequestDTO paiement) {
         return paiementService.effectuerPaiement(/*clientId, reservationId*/paiement);

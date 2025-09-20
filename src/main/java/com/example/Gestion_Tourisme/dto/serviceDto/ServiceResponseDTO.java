@@ -12,6 +12,6 @@ public class ServiceResponseDTO {
     private String nom;
     private String description;
     private float prix;
-    private String emplacement;
+    //private String emplacement;
     private String type_service;
 }

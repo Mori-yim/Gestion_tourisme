@@ -57,9 +57,29 @@ import java.util.stream.Collectors;
         paiementRepository.save(paiement);
 
         // Générer une facture PDF avec iText
-        //return PdfGenerator.generateFacture(reservation, paiement);
-        return null;
+        return PdfGenerator.generateFacture(reservation, paiement);
+
     }
+
+    @Transactional
+    public ByteArrayInputStream effectuerPaiement(Long reservationId, double montant) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+
+        Paiement paiement = new Paiement();
+        paiement.setReservation(reservation);
+        paiement.setMontant(montant);
+        //paiement.setDatePaiement(LocalDateTime.now());
+        paiement.setStatut("SUCCES");
+
+        paiementRepository.save(paiement);
+
+        // Générer une facture PDF avec iText
+        return PdfGenerator.generateFacture(reservation, paiement);
+
+    }
+
+
     @Override
     public PaiementResponseDTO getById(Long id) {
         Paiement paiement= paiementRepository.findById(id).get();

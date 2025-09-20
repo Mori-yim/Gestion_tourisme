@@ -134,4 +134,23 @@ public class ReservationServiceImpl implements ReservationService{
                 .collect(Collectors.toList());
     }
 
+    // Créer une réservation
+    @Transactional
+    public ReservationResponseDTO createReservation(Long clientId, Long serviceId) {
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+        com.example.Gestion_Tourisme.entity.Service service = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new RuntimeException("Service introuvable"));
+
+        Reservation reservation = new Reservation();
+        reservation.setClient(client);
+        reservation.setService(service);
+        reservation.setStatut("EN_ATTENTE");
+
+        Reservation saved = reservationRepository.save(reservation);
+        return modelMapper.map(saved, ReservationResponseDTO.class);
+    }
+
+
+
 }

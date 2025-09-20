@@ -1,6 +1,6 @@
 package com.example.Gestion_Tourisme.config;
 
-/*import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+
 public class SecurityConfig {
 
     @Autowired
@@ -51,7 +52,7 @@ public class SecurityConfig {
                         // accès lecture services pour tous authentifiés et non-authentifiés (si voulu) :
                         .requestMatchers("/api/services").permitAll()
                         // endpoints réservés aux admins
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")/*hasRole("ADMIN")/
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")/*hasRole("ADMIN")*/
                         .requestMatchers("/api/agent/**").hasAuthority("ROLE_AGENT")
                         .requestMatchers("/api/client/**").hasAuthority("ROLE_CLIENT")
                         //.requestMatchers("/api/service/**").permitAll()
@@ -66,4 +67,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-}*/
+}

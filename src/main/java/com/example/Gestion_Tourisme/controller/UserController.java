@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/admin/user")
 public class UserController {
     @Autowired
     private UserService userService;
-    @PostMapping("/create")
-    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO userRequestDTO){
-        return new ResponseEntity<>(userService.create(userRequestDTO),HttpStatus.CREATED);
-    }
+//    @PostMapping("/create")
+//    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserRequestDTO userRequestDTO){
+//        return new ResponseEntity<>(userService.create(userRequestDTO),HttpStatus.CREATED);
+//    }
     @GetMapping("/")
     public List<UserResponseDTO> getAll(){
         return userService.getAll();

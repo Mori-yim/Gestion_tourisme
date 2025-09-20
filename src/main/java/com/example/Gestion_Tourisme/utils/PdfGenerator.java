@@ -2,15 +2,16 @@ package com.example.Gestion_Tourisme.utils;
 
 import com.example.Gestion_Tourisme.entity.Paiement;
 import com.example.Gestion_Tourisme.entity.Reservation;
-//import com.itextpdf.text.*;
-//import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 public class PdfGenerator {
 
-    /*public static ByteArrayInputStream generateFacture(Reservation reservation, Paiement paiement) {
+    public static ByteArrayInputStream generateFacture(Reservation reservation, Paiement paiement) {
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -35,8 +36,8 @@ public class PdfGenerator {
             document.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }/
+        }
 
         return new ByteArrayInputStream(out.toByteArray());
-    }*/
+    }
 }

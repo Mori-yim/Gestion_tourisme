@@ -14,28 +14,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/site")
+@RequestMapping("/api")
 public class SiteController {
     @Autowired
     private SiteService siteService;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/site/create")
     public ResponseEntity<SiteTouristiqueResponseDTO> create(@RequestBody SiteTouristiqueRequestDTO site){
         return new ResponseEntity<>(siteService.create(site), HttpStatus.CREATED);
     }
-    @GetMapping("/")
+    @GetMapping("/site/")
     public List<SiteTouristiqueResponseDTO> getAll(){
         return siteService.getAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/site/{id}")
     public ResponseEntity<SiteTouristiqueResponseDTO> getById(@PathVariable Long id){
         return new ResponseEntity<>(siteService.getById(id),HttpStatus.OK);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/admin/site/update/{id}")
     public ResponseEntity<SiteTouristiqueResponseDTO> update(@PathVariable Long id, @RequestBody SiteTouristiqueRequestDTO site){
         return new ResponseEntity<>(siteService.UpdateById(id,site),HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/admin/site/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         siteService.delete(id);
         return ResponseEntity.noContent().build();

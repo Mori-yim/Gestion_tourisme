@@ -11,6 +11,7 @@ import com.example.Gestion_Tourisme.entity.*;
 import com.example.Gestion_Tourisme.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -37,6 +38,8 @@ public class UserServiceImpl implements UserService{
     private AgentRepository agentRepository;
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public UserResponseDTO create(UserRequestDTO user) {
         User user1 = modelMapper.map(user,User.class);
@@ -132,7 +135,7 @@ public class UserServiceImpl implements UserService{
 
         // chiffrage du mot de passe
         //String encodedPwd = passwordEncoder.encode(dto.getPassword());
-        //dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         // création selon role
          if (dto.getRole() == Role.ROLE_ADMIN) {
@@ -146,8 +149,8 @@ public class UserServiceImpl implements UserService{
             Agent saved = agentRepository.save(agent);
             return modelMapper.map(saved, AgentResponseDTO.class);
         }          // Assurez-vous que le rôle est assigné, si ce n'est pas déjà le cas
-        else if (dto.getRole() == null) {
-            dto.setRole(Role.ROLE_CLIENT); // Assigne le rôle par défaut
+        else if (dto.getRole() ==Role.ROLE_CLIENT) {
+           // dto.setRole(Role.ROLE_CLIENT); // Assigne le rôle par défaut
             Client client = modelMapper.map(dto, Client.class);
             Client saved = clientRepository.save(client);
             return modelMapper.map(saved, ClientResponseDto.class);

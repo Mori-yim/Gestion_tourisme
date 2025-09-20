@@ -1,6 +1,8 @@
 package com.example.Gestion_Tourisme.config;
 
-/*import jakarta.servlet.FilterChain;
+import com.example.Gestion_Tourisme.service.CustomerUserDetailsService;
+import com.example.Gestion_Tourisme.utils.JwtUtil;
+import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private CustomerUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -60,4 +62,3 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-*/

@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 //@AllArgsConstructor
 //@NoArgsConstructor
 public class AdminResponseDTO extends UserResponseDTO {
-    private String role;
+    private String code;
 }

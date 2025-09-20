@@ -1,13 +1,23 @@
 package com.example.Gestion_Tourisme.controller;
 
+import com.example.Gestion_Tourisme.dto.UserRest;
 import com.example.Gestion_Tourisme.dto.userDto.UserRequestDTO;
 import com.example.Gestion_Tourisme.dto.userDto.UserResponseDTO;
 import com.example.Gestion_Tourisme.entity.User;
 import com.example.Gestion_Tourisme.repository.UserRepository;
+import com.example.Gestion_Tourisme.service.CustomerUserDetailsService;
+import com.example.Gestion_Tourisme.service.UserService;
+import com.example.Gestion_Tourisme.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -15,20 +25,25 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-   /* @Autowired
+    @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    CustomUserDetailsService userDetailsService;
+    private CustomerUserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserService userService;
 
     /**
      * Inscription : on reçoit un UserRequestDto.
      * On crée un Client ou Admin selon role.
-     /
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRequestDTO dto) {
         try {
@@ -42,7 +57,7 @@ public class AuthController {
     /**
      * Connexion : on reçoit username et password (dans un UserRequestDto ou un DTO spécifique).
      * On authentifie via AuthenticationManager et on renvoie un token JWT.
-     /
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserRest loginDto) {
         try {
@@ -83,6 +98,6 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
         return ResponseEntity.ok("Mot de passe changé avec succès ✅");
-    }*/
+    }
 
 }

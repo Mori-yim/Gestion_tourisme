@@ -15,5 +15,9 @@ public class ReservationResponseDTO {
     private String nom;
     private Date dateDebut;
     private Date dateFin;
+    private String statut;
+    private Long clientId;
+    private Long serviceId;
+    private Long siteId;
 
 }

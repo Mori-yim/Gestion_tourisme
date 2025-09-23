@@ -6,9 +6,11 @@ import com.example.Gestion_Tourisme.dto.userDto.UserRequestDTO;
 import com.example.Gestion_Tourisme.dto.userDto.UserResponseDTO;
 import com.example.Gestion_Tourisme.entity.Agent;
 import com.example.Gestion_Tourisme.entity.Service;
+import com.example.Gestion_Tourisme.entity.SiteTouristique;
 import com.example.Gestion_Tourisme.entity.User;
 import com.example.Gestion_Tourisme.repository.AgentRepository;
 import com.example.Gestion_Tourisme.repository.ServiceRepository;
+import com.example.Gestion_Tourisme.repository.SiteTouristiqueRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ public class ServicesServiceImpl implements ServicesService{
     private ModelMapper modelMapper;
     @Autowired
     private AgentRepository agentRepository;
+    @Autowired
+    private SiteTouristiqueRepository siteTouristique;
 
 //    public ServiceResponseDTO create(ServiceRequestDTO service) {
 //        Service service1= modelMapper.map(service,Service.class);
@@ -69,14 +73,34 @@ public class ServicesServiceImpl implements ServicesService{
     // Ajouter un service touristique  (ex: guide, transport, excursion).
     @Transactional
     public ServiceResponseDTO createService(ServiceRequestDTO serviceRequest) {
-        Agent agent = agentRepository.findById(serviceRequest.getAgentId())
-                .orElseThrow(() -> new RuntimeException("Agent introuvable"));
+//        Agent agent = agentRepository.findById(serviceRequest.getAgentId())
+//                .orElseThrow(() -> new RuntimeException("Agent introuvable"));
+//
+//        Service service = modelMapper.map(serviceRequest,Service.class);
+//        service.setAgent(agent);
+//
+//        Service saved = serviceRepository.save(service);
+//        return modelMapper.map(saved, ServiceResponseDTO.class);
+        // Création d'une nouvelle entité Service
+        Service service = new Service();
+        service.setNom(serviceRequest.getNom());
+        service.setDescription(serviceRequest.getDescription());
+        service.setPrix(serviceRequest.getPrix());
+        service.setType_service(serviceRequest.getType_service());
 
-        Service service = modelMapper.map(serviceRequest,Service.class);
+        // Récupérer l'Agent par son id
+        Agent agent = agentRepository.findById(serviceRequest.getAgentId())
+                .orElseThrow(() -> new RuntimeException("Agent non trouvé avec id : " + serviceRequest.getAgentId()));
         service.setAgent(agent);
 
-        Service saved = serviceRepository.save(service);
-        return modelMapper.map(saved, ServiceResponseDTO.class);
+        // Récupérer le Site par son id
+        SiteTouristique site = siteTouristique.findById(serviceRequest.getSiteId())
+                .orElseThrow(() -> new RuntimeException("Site non trouvé avec id : " + serviceRequest.getSiteId()));
+        service.setSite(site);
+
+        // Pas besoin de setter l'id → généré automatiquement par la DB
+         Service service1=serviceRepository.save(service);
+         return modelMapper.map(service1,ServiceResponseDTO.class);
     }
 
     // Lire les services d’un agent

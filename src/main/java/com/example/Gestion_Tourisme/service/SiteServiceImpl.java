@@ -63,7 +63,7 @@ public class SiteServiceImpl implements SiteService{
         List<SiteTouristique> sites;
 
         if (siteRequest.getNom() != null && !siteRequest.getNom().isEmpty()) {
-            sites = siteTouristiqueRepository.findByNomContainingIgnoreCase(siteRequest.getNom());
+            sites = (List<SiteTouristique>) siteTouristiqueRepository.findByNomContainingIgnoreCase(siteRequest.getNom());
         } else if (siteRequest.getLocalisation() != null && !siteRequest.getLocalisation().isEmpty()) {
             sites = siteTouristiqueRepository.findByLocalisationContainingIgnoreCase(siteRequest.getLocalisation());
         } else {
@@ -77,7 +77,8 @@ public class SiteServiceImpl implements SiteService{
 
     @Override
     public SiteTouristiqueResponseDTO chearchByNom(String nom) {
-        return (SiteTouristiqueResponseDTO) siteTouristiqueRepository.findByNomContainingIgnoreCase(nom);
+        SiteTouristique site= siteTouristiqueRepository.findByNomContainingIgnoreCase(nom);
+        return modelMapper.map(site,SiteTouristiqueResponseDTO.class);
     }
 
     @Override

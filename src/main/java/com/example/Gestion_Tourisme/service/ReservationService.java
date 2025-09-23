@@ -16,4 +16,5 @@ public interface ReservationService {
     public List<ReservationResponseDTO> getReservationsByClient(Long clientId);
     public List<ReservationResponseDTO> getHistoriqueReservations(Long clientId);
     public List<ReservationResponseDTO> getReservationsForAgent(Long agentId);
+    public ReservationResponseDTO createReservation(ReservationRequestDTO reservationRequestDTO);
 }

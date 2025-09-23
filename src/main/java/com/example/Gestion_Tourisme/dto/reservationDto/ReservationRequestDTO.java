@@ -20,5 +20,6 @@ public class ReservationRequestDTO {
     private String statut;
     private Long clientId;
     private Long serviceId;
+    private Long siteId;
 
 }

@@ -14,30 +14,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reservation")
+@RequestMapping("/api")
 public class ReservationController {
     @Autowired
     private ReservationService reservationService;
     @Autowired
     private ClientService clientService;
 
-    @PostMapping("/create")
+    @PostMapping("/client/reservation/create")
     public ResponseEntity<ReservationResponseDTO> create(@RequestBody ReservationRequestDTO reservationRequestDTO){
-        return new ResponseEntity<>(reservationService.create(reservationRequestDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(reservationService.createReservation(reservationRequestDTO), HttpStatus.CREATED);
     }
-    @GetMapping("/")
+    @GetMapping("/reservation/")
     public List<ReservationResponseDTO> getAll(){
         return reservationService.getAll();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/reservation/{id}")
     public ResponseEntity<ReservationResponseDTO> getById(@PathVariable Long id){
         return new ResponseEntity<>(reservationService.getById(id),HttpStatus.OK);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/reservation/update/{id}")
     public ResponseEntity<ReservationResponseDTO> update(@PathVariable Long id, @RequestBody ReservationRequestDTO reservationRequestDTO){
         return new ResponseEntity<>(reservationService.updateById(id,reservationRequestDTO),HttpStatus.OK);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/reservation/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         reservationService.delete(id);
         return ResponseEntity.noContent().build();

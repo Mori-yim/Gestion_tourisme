@@ -32,6 +32,10 @@ public class Reservation {
     @JoinColumn(name = "service_id")
     private Service service;
 
+    @ManyToOne
+    @JoinColumn(name = "site_id")
+    private SiteTouristique site;
+
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Paiement> paiements = new ArrayList<>();
 

@@ -4,10 +4,7 @@ import com.example.Gestion_Tourisme.dto.reservationDto.ReservationRequestDTO;
 import com.example.Gestion_Tourisme.dto.reservationDto.ReservationResponseDTO;
 import com.example.Gestion_Tourisme.dto.serviceDto.ServiceRequestDTO;
 import com.example.Gestion_Tourisme.dto.serviceDto.ServiceResponseDTO;
-import com.example.Gestion_Tourisme.entity.Agent;
-import com.example.Gestion_Tourisme.entity.Client;
-import com.example.Gestion_Tourisme.entity.Paiement;
-import com.example.Gestion_Tourisme.entity.Reservation;
+import com.example.Gestion_Tourisme.entity.*;
 import com.example.Gestion_Tourisme.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,8 @@ public class ReservationServiceImpl implements ReservationService{
     @Autowired
     private AgentRepository agentRepository;
     @Autowired
+    private SiteTouristiqueRepository siteTouristiqueRepository;
+    @Autowired
     private ModelMapper modelMapper;
     @Override
     public ReservationResponseDTO create(ReservationRequestDTO reservation) {
@@ -50,6 +49,37 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation saved = reservationRepository.save(reservation1);
         return modelMapper.map(saved, ReservationResponseDTO.class);
     }
+
+    @Transactional
+    public ReservationResponseDTO createReservation(ReservationRequestDTO reservationRequestDTO) {
+
+        // Création d'une nouvelle entité Service
+        Reservation reservation = new Reservation();
+        reservation.setNom(reservationRequestDTO.getNom());
+        reservation.setDateReservation(reservationRequestDTO.getDateReservation());
+        reservation.setStatut(reservationRequestDTO.getStatut());
+        reservation.setDateDebut(reservationRequestDTO.getDateDebut());
+        reservation.setDateFin(reservationRequestDTO.getDateFin());
+
+
+        // Récupérer l'Agent par son id
+        Client client = clientRepository.findById(reservationRequestDTO.getClientId())
+                .orElseThrow(() -> new RuntimeException("Client non trouvé avec id : " + reservationRequestDTO.getClientId()));
+        reservation.setClient(client);
+
+        // Récupérer le Site par son id
+        SiteTouristique site = siteTouristiqueRepository.findById(reservationRequestDTO.getSiteId())
+                .orElseThrow(() -> new RuntimeException("Site non trouvé avec id : " + reservationRequestDTO.getSiteId()));
+        reservation.setSite(site);
+        //Recuperer le service par son id
+        com.example.Gestion_Tourisme.entity.Service service = serviceRepository.findById(reservationRequestDTO.getServiceId())
+                .orElseThrow(()->new RuntimeException("Service non trouve avec id: "+reservationRequestDTO.getServiceId()));
+         reservation.setService(service);
+        // Pas besoin de setter l'id → généré automatiquement par la DB
+        Reservation reservation1=reservationRepository.save(reservation);
+        return modelMapper.map(reservation1,ReservationResponseDTO.class);
+    }
+
 
     // Lire toutes les réservations d’un client
     public List<ReservationResponseDTO> getReservationsByClient(Long clientId) {

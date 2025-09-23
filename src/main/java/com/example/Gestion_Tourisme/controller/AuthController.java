@@ -88,16 +88,19 @@ public class AuthController {
     // changement de mot de passe: endpoint protégé
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestParam String username,
-                                            @RequestParam String currentPassword,
+                                            @RequestParam String email,
                                             @RequestParam String newPassword) {
         User user = userRepository.findByUsername(username).orElseThrow();
         // vérifier password actuel
-        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+        /*if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Mot de passe actuel invalide");
+        }*/
+        if(user.getEmail().equals(email)) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.ok("Mot de passe changé avec succès ✅");
         }
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-        return ResponseEntity.ok("Mot de passe changé avec succès ✅");
+        return ResponseEntity.ok("nomd'utilisateur ou email incorrecte");
     }
 
 }
